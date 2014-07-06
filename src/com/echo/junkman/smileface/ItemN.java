@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 public class ItemN extends ImageView{
 
-	private ItemType type;
+	private int type;
 	private Context context;
 	
 	private Random random;
@@ -37,24 +37,17 @@ public class ItemN extends ImageView{
 		setRandomType();
 	}
 	
-	public void setType(ItemType type){
-		this.type = type;
-		
-		Bitmap bitmap = resourcePool.getItemBitmap(type);
-		setImageBitmap(bitmap);
-	}
 	
-	public ItemType getType(){
+	public int getType(){
 		return this.type;
 	}
 	
 	public int getValue(){
 		int value;
 		switch (this.type) {
-		case TYPE_BOMB:
-			value = -100;
-			break;
-		case TYPE_MONEY_100:
+		case 0:
+		case 1:
+		case 2:
 			value = 100;
 			break;
 
@@ -66,31 +59,21 @@ public class ItemN extends ImageView{
 		return value;
 	}
 	
-	public void setRandomType(){
-		
-		//TODO random type
-		ItemType tp;
-		switch (random.nextInt(2)) {
-		case 0:
-			tp = ItemType.TYPE_BOMB;
-			break;
-		case 1:
-			tp = ItemType.TYPE_BOTTLE;
-			break;
-
-		default:
-			tp = ItemType.TYPE_UNKNOWN;
-			break;
-		}
-		this.type = tp;
-		Bitmap bitmap = resourcePool.getItemBitmap(tp);
+	public void setType(int type){
+		this.type = type;
+		Bitmap bitmap = resourcePool.getItemBitmap(type);
 		Matrix matrix = new Matrix();
 		matrix.setRotate(random.nextInt(360));
 		
 		Bitmap bm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		
 		setImageBitmap(bm);
+	}
+	
+	public void setRandomType(){
 		
+		int type = random.nextInt(27);
+		setType(type);
 	}
 	
 	

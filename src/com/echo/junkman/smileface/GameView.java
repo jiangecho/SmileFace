@@ -84,13 +84,10 @@ public class GameView extends GridLayout {
 		int index;
 		for (int i = 0; i < n; i++) {
 			index = random.nextInt(COLUMN_COUNT * COLUMN_COUNT);
-//			Log.e("TMP", "index " + index + "items " + items.length);
-//			ItemN itemN = items[index];
-//			
-//			Log.e("TMP", "is null " + (itemN == null ? true : false));
-			
 			items[index].setRandomType();
 		}
+		
+		items[n].setType(random.nextInt(3));
 	}
 	
 	public void randomResetAllItems(){

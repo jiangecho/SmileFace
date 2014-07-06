@@ -4,8 +4,10 @@ import java.util.HashMap;
 
 
 
+
 import com.echo.tmp.R;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -53,24 +55,11 @@ public class ResourcePool {
 			Log.e("TMP", "load image_" + imageStartIndex + " " + resID);
 			
 			bitmap = BitmapFactory.decodeResource(res, resID);
-			
-			//TODO
-			switch (imageStartIndex) {
-			case 0:
-				type = ItemType.TYPE_BOMB;
-				break;
-			case 1:
-				type = ItemType.TYPE_BOTTLE;
-				break;
-			default:
-				type = ItemType.TYPE_UNKNOWN;
-				break;
-			}
 
-			bitmaps.put(type.name(), bitmap);
+			bitmaps.put("" + imageStartIndex, bitmap);
 
 			//TODO
-			descriptions.put(type.name(), sContext.getResources().getString(R.string.app_name));
+			descriptions.put("" + imageStartIndex, sContext.getResources().getString(R.string.app_name));
 			
 			imageStartIndex ++;
 		}
@@ -78,13 +67,13 @@ public class ResourcePool {
 
 	}
 	
-	public Bitmap getItemBitmap(ItemType type){
+	public Bitmap getItemBitmap(int index){
 		
-		return bitmaps.get(type.name());
+		return bitmaps.get("" + index);
 	}
 	
-	public String getDescription(ItemType type){
-		return descriptions.get(type.name());
+	public String getDescription(int index){
+		return descriptions.get("" + index);
 	}
 	
 
