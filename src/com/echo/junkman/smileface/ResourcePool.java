@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import com.echo.tmp.R;
 
-import android.R.integer;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -21,7 +20,6 @@ public class ResourcePool {
 	private static Context sContext;
 	private static ResourcePool resourcePool;
 	
-	private static final int MAX_VALUABLE_IMAGE_INDEX = 10;
 	
 	private ResourcePool(Context context){
 		sContext = context;
@@ -44,7 +42,6 @@ public class ResourcePool {
 		
 		int imageStartIndex = 0;
 		Bitmap bitmap;
-		ItemType type;
 		
 		Resources res = sContext.getResources();
 		while (true) {

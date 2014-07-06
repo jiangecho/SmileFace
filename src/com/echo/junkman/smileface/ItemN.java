@@ -48,11 +48,11 @@ public class ItemN extends ImageView{
 		case 0:
 		case 1:
 		case 2:
-			value = 100;
+			value = 20;
 			break;
 
 		default:
-			value = 0;
+			value = 1;
 			break;
 		}
 		
@@ -73,7 +73,12 @@ public class ItemN extends ImageView{
 	public void setRandomType(){
 		
 		int type = random.nextInt(27);
-		setType(type);
+		if (type == 3) {
+			type = random.nextInt(4);
+			setType(type);
+		}else {
+			setType(type);
+		}
 	}
 	
 	

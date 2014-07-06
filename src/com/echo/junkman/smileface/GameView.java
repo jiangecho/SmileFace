@@ -84,6 +84,10 @@ public class GameView extends GridLayout {
 		int index;
 		for (int i = 0; i < n; i++) {
 			index = random.nextInt(COLUMN_COUNT * COLUMN_COUNT);
+			// prevent generate a red heart
+			if (index == 3) {
+				continue;
+			}
 			items[index].setRandomType();
 		}
 		

@@ -9,7 +9,6 @@ import android.os.CountDownTimer;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.backup.FullBackupDataOutput;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -22,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class MainActivity extends Activity implements OnClickListener, DialogInterface.OnClickListener{
@@ -43,7 +43,7 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 	private int smileFaceClickCount;
 	private int elapseMillis;
 	
-	private static final int GAME_TIME_LENGHT = 20;
+	private static final int GAME_TIME_LENGHT = 60;
 	private static final String BEST_SCORE = "bestScore";
 	
 	private SharedPreferences sharedPreferences;
@@ -123,17 +123,18 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 			case 1:
 			case 2:
 				smileFaceClickCount ++;
-				currentScore += ((ItemN) view).getValue();
 				break;
 			case 3:
 				gameCountDownTimer.cancel();
 				gameCountDownTimer.start();
-				progressBar.setProgress(60);
+				progressBar.setProgress(GAME_TIME_LENGHT);
 				
+				Toast.makeText(this, getResources().getString(R.string.show_msg), Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
 			}
+			currentScore += ((ItemN) view).getValue();
 			currentScoreView.setText(getResources().getString(R.string.score) + " " + currentScore);
 			if (currentScore > bestScore) {
 				bestScore = currentScore;
@@ -198,7 +199,11 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 			rewardScore = (int) (clickSpeed * 100);
 			rewardScoreTV.setText(resources.getString(R.string.reward_score) + " " + rewardScore);
 			
-			totalScoreTV.setText(resources.getString(R.string.total_score) + " " + (currentScore + rewardScore));
+			currentScore += rewardScore;
+			if (currentScore > bestScore ) {
+				bestScore = currentScore;
+			}
+			totalScoreTV.setText(resources.getString(R.string.total_score) + " " + currentScore);
 
 			alertDialog.setView(view);
 			alertDialog.setTitle("Game Over");
@@ -222,6 +227,8 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
+		sharedPreferences.edit().putInt(BEST_SCORE, bestScore).commit();
+
 		switch (which) {
 		case AlertDialog.BUTTON_POSITIVE:
 			startGame();
