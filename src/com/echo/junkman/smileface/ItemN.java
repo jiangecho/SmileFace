@@ -50,6 +50,9 @@ public class ItemN extends ImageView{
 		case 2:
 			value = 20;
 			break;
+		case 3:
+			value = 100;
+			break;
 
 		default:
 			value = 1;
@@ -62,12 +65,12 @@ public class ItemN extends ImageView{
 	public void setType(int type){
 		this.type = type;
 		Bitmap bitmap = resourcePool.getItemBitmap(type);
-		Matrix matrix = new Matrix();
-		matrix.setRotate(random.nextInt(360));
+//		Matrix matrix = new Matrix();
+//		matrix.setRotate(random.nextInt(360));
+//		
+//		Bitmap bm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 		
-		Bitmap bm = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
-		
-		setImageBitmap(bm);
+		setImageBitmap(bitmap);
 	}
 	
 	public void setRandomType(){

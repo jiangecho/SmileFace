@@ -2,12 +2,11 @@ package com.echo.junkman.smileface;
 
 import java.text.DecimalFormat;
 
-import com.echo.tmp.R;
+import com.echo.junkman.smileface.R;
 import com.wandoujia.ads.sdk.Ads;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -15,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,7 +23,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-@SuppressLint("NewApi")
 public class MainActivity extends Activity implements OnClickListener, DialogInterface.OnClickListener{
 
 	private GameView gameView;
@@ -38,6 +35,7 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 	private CountDownTimer countDownTimer;
 	private ProgressBar progressBar;
 	private TextView countDownView;
+	private Context context;
 	
 	
 	//TODO init
@@ -50,7 +48,6 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 	
 	private SharedPreferences sharedPreferences;
 	
-	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
@@ -91,14 +88,14 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 				
 			}
 		};
-		
 		// Init AdsSdk.
 		 try {
 		   Ads.init(this, "100009149", "595b980284394c43347219baff32b6f8");
 		 } catch (Exception e) {
 		   e.printStackTrace();
 		 }
-		 Ads.showBannerAd(this, (ViewGroup) findViewById(R.id.banner_ad_container), "5a98ec742b7f5e20c0717c677c8433d9");
+		 this.context = this;
+		
 	}
 	
 	
@@ -107,19 +104,23 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 	protected void onResume() {
 		super.onResume();
 		startGame();
+		try {
+			Ads.showBannerAd(this, (ViewGroup) findViewById(R.id.banner_ad_container), "5a98ec742b7f5e20c0717c677c8433d9");
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
-
-
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-
 	
-	//TODO
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+		countDownTimer.cancel();
+		gameCountDownTimer.cancel();
+	}
+
+
+
 	@Override
 	public void onClick(View view) {
 		totalClickCount ++;
@@ -134,11 +135,12 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 				smileFaceClickCount ++;
 				break;
 			case 3:
-				gameCountDownTimer.cancel();
-				gameCountDownTimer.start();
-				progressBar.setProgress(GAME_TIME_LENGHT);
+//				gameCountDownTimer.cancel();
+//				gameCountDownTimer.start();
+//				progressBar.setProgress(GAME_TIME_LENGHT);
+//				
+//				Toast.makeText(this, getResources().getString(R.string.show_msg), Toast.LENGTH_SHORT).show();
 				
-				Toast.makeText(this, getResources().getString(R.string.show_msg), Toast.LENGTH_SHORT).show();
 				break;
 			default:
 				break;
@@ -184,9 +186,9 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 			gameView.randomResetAllItems();
 			progressBar.setProgress(60);
 			
-			AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+			AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 			
-			LayoutInflater layoutInflater = MainActivity.this.getLayoutInflater();
+			LayoutInflater layoutInflater = ((MainActivity)context).getLayoutInflater();
 			View view = layoutInflater.inflate(R.layout.alert_layout, null);
 			TextView totalClickCountTV = (TextView) view.findViewById(R.id.totalClickCountTV);
 			TextView smileFaceClickCountTV = (TextView) view.findViewById(R.id.smileFaceClickCountTV);
@@ -194,32 +196,28 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 			TextView rewardScoreTV = (TextView) view.findViewById(R.id.rewardScoreTV);
 			TextView totalScoreTV = (TextView) view.findViewById(R.id.totalScoreTV);
 			
-			Resources resources = MainActivity.this.getResources();
+			Resources resources = context.getResources();
 			
 			totalClickCountTV.setText(resources.getString(R.string.total_click_count) + " " + totalClickCount);
 			smileFaceClickCountTV.setText(resources.getString(R.string.smile_face_click_count) + " " + smileFaceClickCount);
-			clickSpeed = (float)totalClickCount / (float)(elapseMillis / 1000);
+			clickSpeed = (float)totalClickCount / GAME_TIME_LENGHT;
 			
 			DecimalFormat fnum = new DecimalFormat("##0.00");
 			String clickSpeedString = fnum.format(clickSpeed);
 			
 			clickSpeedTV.setText(resources.getString(R.string.click_speed) + " " + clickSpeedString);
 			
-			rewardScore = (int) (clickSpeed * 100);
+			rewardScore = (int) (clickSpeed * 20);
 			rewardScoreTV.setText(resources.getString(R.string.reward_score) + " " + rewardScore);
 			
-			currentScore += rewardScore;
-			if (currentScore > bestScore ) {
-				bestScore = currentScore;
-			}
-			totalScoreTV.setText(resources.getString(R.string.total_score) + " " + currentScore);
+			totalScoreTV.setText(resources.getString(R.string.total_score) + " " + (currentScore + rewardScore));
 
 			alertDialog.setView(view);
 			alertDialog.setTitle("Game Over");
 			
 			
-			alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, resources.getString(R.string.restart), MainActivity.this);
-			alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, resources.getString(R.string.quit), MainActivity.this);
+			alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, resources.getString(R.string.restart), (MainActivity)context);
+			alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, resources.getString(R.string.quit), (MainActivity)context);
 			alertDialog.show();
 			
 		}
@@ -237,6 +235,8 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
 		sharedPreferences.edit().putInt(BEST_SCORE, bestScore).commit();
+
+		dialog.dismiss();
 
 		switch (which) {
 		case AlertDialog.BUTTON_POSITIVE:

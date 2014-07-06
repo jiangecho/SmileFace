@@ -3,13 +3,10 @@ package com.echo.junkman.smileface;
 
 import java.util.Random;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-//import android.support.v7.widget.GridLayout;
+import android.support.v7.widget.GridLayout;
 import android.util.AttributeSet;
-import android.widget.GridLayout;
 
-@SuppressLint("NewApi")
 public class GameView extends GridLayout {
 	
 	private static final int COLUMN_COUNT = 4;

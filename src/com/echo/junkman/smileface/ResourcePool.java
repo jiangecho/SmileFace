@@ -1,17 +1,10 @@
 package com.echo.junkman.smileface;
 
 import java.util.HashMap;
-
-
-
-
-import com.echo.tmp.R;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
 public class ResourcePool {
 	
@@ -45,11 +38,11 @@ public class ResourcePool {
 		
 		Resources res = sContext.getResources();
 		while (true) {
-			int resID = res.getIdentifier("image_" + imageStartIndex, "drawable", "com.echo.tmp");
+			int resID = res.getIdentifier("image_" + imageStartIndex, "drawable", sContext.getPackageName());
 			if (resID == 0) {
 				break;
 			}
-			Log.e("TMP", "load image_" + imageStartIndex + " " + resID);
+			//Log.e("TMP", "load image_" + imageStartIndex + " " + resID);
 			
 			bitmap = BitmapFactory.decodeResource(res, resID);
 
