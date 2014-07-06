@@ -3,16 +3,11 @@ package com.echo.junkman.smileface;
 
 import java.util.Random;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 //import android.support.v7.widget.GridLayout;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.GridLayout;
-import android.widget.ImageView;
-import android.view.View;
-import android.view.View.OnClickListener;
 
 @SuppressLint("NewApi")
 public class GameView extends GridLayout {

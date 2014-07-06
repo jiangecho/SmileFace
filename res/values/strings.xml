@@ -7,5 +7,12 @@
     <string name="best_score">最高分:</string>
     <string name="ready">ready</string>
     <string name="go">go</string>
+    <string name="total_click_count">一共点击(次):</string>
+    <string name="smile_face_click_count">点击笑脸(次):</string>
+    <string name="click_speed">点击速度(次/秒):</string>
+    <string name="reward_score">速度奖励得分:</string>
+    <string name="total_score">总分:</string>
+    <string name="quit">退出</string>
+    <string name="restart">再挑战一次</string>
 
 </resources>

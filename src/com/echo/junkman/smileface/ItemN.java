@@ -1,10 +1,6 @@
 package com.echo.junkman.smileface;
 
-import java.lang.annotation.Retention;
 import java.util.Random;
-
-import org.apache.http.conn.routing.RouteInfo.TunnelType;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -36,7 +32,7 @@ public class ItemN extends ImageView{
 	
 	private void init(Context context){
 		this.context = context;
-		resourcePool = ResourcePool.getResourcePool(context);
+		resourcePool = ResourcePool.getResourcePool(this.context);
 		random = new Random();
 		setRandomType();
 	}
