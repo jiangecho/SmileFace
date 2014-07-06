@@ -38,6 +38,13 @@
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_below="@id/currentScoreView" />
+	    
+	      <FrameLayout
+            android:id="@+id/banner_ad_container"
+            android:layout_width="match_parent"
+            android:layout_height="80dip"
+            android:layout_below="@id/gameView"
+            android:layout_alignParentBottom="true"/>
 	</RelativeLayout>
     <TextView
      android:id="@+id/countDownView"

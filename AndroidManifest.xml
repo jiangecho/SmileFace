@@ -7,6 +7,11 @@
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
+	<uses-permission android:name="android.permission.INTERNET" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -22,6 +27,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--For AdsSdk.-->
+ 
+ 
+    <activity
+        android:name="com.wandoujia.ads.sdk.AppWallActivity"
+        android:label="@string/app_name"
+        android:launchMode="singleTop"
+        android:screenOrientation="landscape"
+        android:configChanges="orientation|keyboardHidden|screenSize"/>
+    <activity
+        android:name="com.wandoujia.ads.sdk.AppWidgetContainerActivity"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:launchMode="singleTop"
+        android:configChanges="orientation|keyboardHidden|screenSize"/>
+    <service android:name="com.wandoujia.ads.sdk.DownloadService"/>
+ 
+<!--AdsSdk End.-->
     </application>
 
 </manifest>

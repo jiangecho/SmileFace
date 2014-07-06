@@ -3,6 +3,7 @@ package com.echo.junkman.smileface;
 import java.text.DecimalFormat;
 
 import com.echo.tmp.R;
+import com.wandoujia.ads.sdk.Ads;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -19,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,6 +92,13 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 			}
 		};
 		
+		// Init AdsSdk.
+		 try {
+		   Ads.init(this, "100009149", "595b980284394c43347219baff32b6f8");
+		 } catch (Exception e) {
+		   e.printStackTrace();
+		 }
+		 Ads.showBannerAd(this, (ViewGroup) findViewById(R.id.banner_ad_container), "5a98ec742b7f5e20c0717c677c8433d9");
 	}
 	
 	
