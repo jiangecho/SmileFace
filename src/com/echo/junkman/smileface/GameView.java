@@ -69,6 +69,7 @@ public class GameView extends GridLayout {
 		
 	}
 	
+	// refactor
 	public void randomRestParItems(){
 		
 		if (!initialized) {

@@ -19,7 +19,6 @@ public class LevelFragment extends Fragment{
 	private ImageView[] imageViews;
 	
 	private int currentLevel;
-	private int condition;
 	
 	private Resources resources;
 	private ResourcePool resourcePool;
@@ -27,7 +26,6 @@ public class LevelFragment extends Fragment{
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		resources = getResources();
 		resourcePool = ResourcePool.getResourcePool(getActivity());
@@ -60,13 +58,11 @@ public class LevelFragment extends Fragment{
 
 	@Override
 	public void onDestroy() {
-		// TODO Auto-generated method stub
 		super.onDestroy();
 	}
 
 	@Override
 	public void onPause() {
-		// TODO Auto-generated method stub
 		super.onPause();
 	}
 
@@ -96,27 +92,64 @@ public class LevelFragment extends Fragment{
 		case 1:
 			imageViews[0].setVisibility(View.INVISIBLE);
 			imageViews[1].setVisibility(View.INVISIBLE);
-			imageViews[2].setVisibility(View.INVISIBLE);
-			imageViews[3].setImageBitmap(resourcePool.getItemBitmap(indexList.get(0)));
+			imageViews[2].setImageBitmap(resourcePool.getItemBitmap(indexList.get(0)));
+			imageViews[3].setVisibility(View.INVISIBLE);
 			imageViews[4].setVisibility(View.INVISIBLE);
+
+			imageViews[3].setVisibility(View.VISIBLE);
 			break;
 		case 2:
 			imageViews[0].setVisibility(View.INVISIBLE);
-			imageViews[1].setVisibility(View.INVISIBLE);
+			imageViews[1].setImageBitmap(resourcePool.getItemBitmap(indexList.get(0)));
 			imageViews[2].setVisibility(View.INVISIBLE);
-			imageViews[3].setImageBitmap(resourcePool.getItemBitmap(indexList.get(0)));
+			imageViews[3].setImageBitmap(resourcePool.getItemBitmap(indexList.get(1)));
 			imageViews[4].setVisibility(View.INVISIBLE);
+			
+			imageViews[1].setVisibility(View.VISIBLE);
+			imageViews[3].setVisibility(View.VISIBLE);
 			break;
 		case 3:
+			imageViews[0].setVisibility(View.INVISIBLE);
+			imageViews[1].setImageBitmap(resourcePool.getItemBitmap(indexList.get(0)));
+			imageViews[2].setImageBitmap(resourcePool.getItemBitmap(indexList.get(1)));
+			imageViews[3].setImageBitmap(resourcePool.getItemBitmap(indexList.get(2)));
+			imageViews[4].setVisibility(View.INVISIBLE);
+			
+			imageViews[1].setVisibility(View.VISIBLE);
+			imageViews[2].setVisibility(View.VISIBLE);
+			imageViews[3].setVisibility(View.VISIBLE);
 			break;
 		case 4:
+			imageViews[0].setImageBitmap(resourcePool.getItemBitmap(indexList.get(0)));
+			imageViews[1].setImageBitmap(resourcePool.getItemBitmap(indexList.get(1)));
+			imageViews[2].setImageBitmap(resourcePool.getItemBitmap(indexList.get(2)));
+			imageViews[3].setImageBitmap(resourcePool.getItemBitmap(indexList.get(3)));
+			imageViews[4].setVisibility(View.INVISIBLE);
+			
+			imageViews[0].setVisibility(View.VISIBLE);
+			imageViews[1].setVisibility(View.VISIBLE);
+			imageViews[2].setVisibility(View.VISIBLE);
+			imageViews[3].setVisibility(View.VISIBLE);
 			break;
 		case 5:
+			imageViews[0].setImageBitmap(resourcePool.getItemBitmap(indexList.get(0)));
+			imageViews[1].setImageBitmap(resourcePool.getItemBitmap(indexList.get(1)));
+			imageViews[2].setImageBitmap(resourcePool.getItemBitmap(indexList.get(2)));
+			imageViews[3].setImageBitmap(resourcePool.getItemBitmap(indexList.get(3)));
+			imageViews[4].setImageBitmap(resourcePool.getItemBitmap(indexList.get(4)));
+			
+			imageViews[0].setVisibility(View.VISIBLE);
+			imageViews[1].setVisibility(View.VISIBLE);
+			imageViews[2].setVisibility(View.VISIBLE);
+			imageViews[3].setVisibility(View.VISIBLE);
+			imageViews[4].setVisibility(View.VISIBLE);
 			break;
 
 		default:
 			break;
 		}
+		
+		rootView.invalidate();
 	}
 	
 

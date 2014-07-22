@@ -2,28 +2,24 @@ package com.echo.junkman.smileface;
 
 import java.text.DecimalFormat;
 
-import com.echo.junkman.smileface.R;
-import com.wandoujia.ads.sdk.Ads;
-
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.view.MotionEvent;
 
-public class MainActivity extends Activity implements OnClickListener, DialogInterface.OnClickListener{
-
+public class GameFragment extends Fragment implements OnClickListener, DialogInterface.OnClickListener{
 	private GameView gameView;
 	private TextView currentScoreView;
 	private TextView bestScoreView;
@@ -37,131 +33,95 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 	private Context context;
 	
 	
-	//TODO init
 	private int totalClickCount;
 	private int smileFaceClickCount;
-	private int elapseMillis;
-	
+
 	private static final int GAME_TIME_LENGHT = 60;
 	private static final String BEST_SCORE = "bestScore";
 	
 	private SharedPreferences sharedPreferences;
 	
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		gameView = (GameView) findViewById(R.id.gameView);
-		
-		currentScoreView = (TextView) findViewById(R.id.currentScoreView);
-		bestScoreView = (TextView) findViewById(R.id.bestScoreView);
-		progressBar = (ProgressBar) findViewById(R.id.progressBar);
-		
-		gameCountDownTimer = new GameCountDownTimer(GAME_TIME_LENGHT * 1000, 2000);
-		gameView.setOnClickListener(this);
-		
-		sharedPreferences = getSharedPreferences(getPackageName(), Context.MODE_PRIVATE);
-		
-		countDownView = (TextView) findViewById(R.id.countDownView);
-		//block touch event when the count down view is visible
-		countDownView.setOnTouchListener(new OnTouchListener() {
-			
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				return true;
-			}
-		});
-		countDownTimer = new CountDownTimer(3 * 1000, 1000) {
-			
-			@Override
-			public void onTick(long millisUntilFinished) {
-				countDownView.setText("" + millisUntilFinished / 1000);
-				
-			}
-			
-			@Override
-			public void onFinish() {
-				countDownView.setText("Go");
-				countDownView.setVisibility(View.GONE);
-
-				gameCountDownTimer.start();
-				
-			}
-		};
-		// Init AdsSdk.
-		 try {
-		   Ads.init(this, "100009149", "595b980284394c43347219baff32b6f8");
-		 } catch (Exception e) {
-		   e.printStackTrace();
-		 }
-		 this.context = this;
-		
-	}
-	
-	
-
-	@Override
-	protected void onResume() {
-		super.onResume();
-		startGame();
-		try {
-			Ads.showBannerAd(this, (ViewGroup) findViewById(R.id.banner_ad_container), "5a98ec742b7f5e20c0717c677c8433d9");
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-	}
+	private View rootView;
 	
 	@Override
-	protected void onPause() {
+	public void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		this.context = getActivity();
+	}
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		if (rootView == null) {
+			rootView = inflater.inflate(R.layout.game_layout, container);
+			gameView = (GameView) rootView.findViewById(R.id.gameView);
+			
+			currentScoreView = (TextView) rootView.findViewById(R.id.currentScoreView);
+			bestScoreView = (TextView) rootView.findViewById(R.id.bestScoreView);
+			progressBar = (ProgressBar) rootView.findViewById(R.id.progressBar);
+			
+			gameCountDownTimer = new GameCountDownTimer(GAME_TIME_LENGHT * 1000, 2000);
+			gameView.setOnClickListener(this);
+			
+			sharedPreferences = context.getSharedPreferences(context.getPackageName(), Context.MODE_PRIVATE);
+			
+			countDownView = (TextView) rootView.findViewById(R.id.countDownView);
+			//block touch event when the count down view is visible
+			countDownView.setOnTouchListener(new OnTouchListener() {
+				
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					return true;
+				}
+			});
+			countDownTimer = new CountDownTimer(3 * 1000, 1000) {
+				
+				@Override
+				public void onTick(long millisUntilFinished) {
+					countDownView.setText("" + millisUntilFinished / 1000);
+					
+				}
+				
+				@Override
+				public void onFinish() {
+					countDownView.setText("Go");
+					countDownView.setVisibility(View.GONE);
+	
+					gameCountDownTimer.start();
+					
+				}
+			};
+
+		}else {
+			ViewGroup parent = (ViewGroup) rootView.getParent();
+			if (parent != null) {
+				parent.removeView(rootView);
+			}
+		}
+
+
+		return rootView;
+	}
+
+	@Override
+	public void onPause() {
 		super.onPause();
+		//TODO
 		countDownTimer.cancel();
 		gameCountDownTimer.cancel();
 	}
-
-
-
 	@Override
-	public void onClick(View view) {
-		totalClickCount ++;
-		if (view instanceof ItemN) {
-			
-			int type = ((ItemN) view).getType();
-			
-			switch (type) {
-			case 0:
-			case 1:
-			case 2:
-				smileFaceClickCount ++;
-				break;
-			case 3:
-//				gameCountDownTimer.cancel();
-//				gameCountDownTimer.start();
-//				progressBar.setProgress(GAME_TIME_LENGHT);
-//				
-//				Toast.makeText(this, getResources().getString(R.string.show_msg), Toast.LENGTH_SHORT).show();
-				
-				break;
-			default:
-				break;
-			}
-			currentScore += ((ItemN) view).getValue();
-			currentScoreView.setText(getResources().getString(R.string.score) + " " + currentScore);
-			if (currentScore > bestScore) {
-				bestScore = currentScore;
-				bestScoreView.setText(getResources().getString(R.string.best_score) + " " + bestScore);
-			}
-			
-			((ItemN) view).setRandomType();
-		}
-		
+	public void onResume() {
+		super.onResume();
+		//TODO
+		startGame();
 	}
-	
+
 	private void startGame(){
 		totalClickCount = 0;
 		smileFaceClickCount = 0;
 		
 		currentScore = 0;
-		elapseMillis = 0;
 		
 		currentScoreView.setText(getString(R.string.score) + " 0");
 		
@@ -170,7 +130,7 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 
 		countDownTimer.start();
 	}
-	
+
 	private class GameCountDownTimer extends CountDownTimer{
 
 		public GameCountDownTimer(long millisInFuture, long countDownInterval) {
@@ -178,6 +138,7 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 			
 		}
 
+		//game logic
 		@Override
 		public void onFinish() {
 			float clickSpeed;
@@ -223,13 +184,43 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 
 		@Override
 		public void onTick(long millisUntilFinished) {
-			
-			elapseMillis += GAME_TIME_LENGHT * 1000 - millisUntilFinished;
 			progressBar.setProgress((int) (millisUntilFinished / 1000));
 			gameView.randomRestParItems();
 		}
 		
 	}
+
+	//TODO  game logic
+	public void onClick(View view) {
+		totalClickCount ++;
+		if (view instanceof ItemN) {
+			
+			int type = ((ItemN) view).getType();
+			
+			switch (type) {
+			case 0:
+			case 1:
+			case 2:
+				smileFaceClickCount ++;
+				break;
+			case 3:
+				
+				break;
+			default:
+				break;
+			}
+			currentScore += ((ItemN) view).getValue();
+			currentScoreView.setText(getResources().getString(R.string.score) + " " + currentScore);
+			if (currentScore > bestScore) {
+				bestScore = currentScore;
+				bestScoreView.setText(getResources().getString(R.string.best_score) + " " + bestScore);
+			}
+			
+			((ItemN) view).setRandomType();
+		}
+		
+	}
+	
 
 	@Override
 	public void onClick(DialogInterface dialog, int which) {
@@ -237,18 +228,19 @@ public class MainActivity extends Activity implements OnClickListener, DialogInt
 
 		dialog.dismiss();
 
+		//restart or recover
 		switch (which) {
 		case AlertDialog.BUTTON_POSITIVE:
 			startGame();
 			break;
 		case AlertDialog.BUTTON_NEGATIVE:
-			finish();
+			//TODO
+			//finish();
 			break;
 
 		default:
 			break;
 		}
 	}
-	
 
 }
