@@ -16,9 +16,9 @@
     <string name="restart">再挑战一次</string>
     <string name="show_msg">点到红心，生命值满咯</string>
     <string name="level">第%d关</string>
-    <string name="action_description">请快速按顺序点击下列表情</string>
+    <string name="action_description">请快速按顺序点击下列表情:</string>
     <string name="pass_level_condition">过关条件:</string>
-    <string name="pass_level_condition_descriptin">成功完成%d组点击</string>
+    <string name="level_pass_condition_descriptin">成功完成%d组点击</string>
    
 
 </resources>
